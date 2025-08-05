@@ -2,15 +2,17 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-	public StateMachine stateMachine { get; private set; }
+	private StateMachine stateMachine;
 
-	private EntityState idleState;
+	public PlayerIdleState idleState { get; private set; }
+	public PlayerMoveState moveState { get; private set; }
 
 	private void Awake()
 	{
 		stateMachine = new StateMachine();
 		
-		idleState = new EntityState(stateMachine, "Idle State"); // TODO: Magic String to enum
+		idleState = new PlayerIdleState(this, stateMachine, "idle"); // TODO: Magic String to enum
+		moveState = new PlayerMoveState(this, stateMachine, "move"); // TODO: Magic String to enum
 	}
 
 	private void Start()
