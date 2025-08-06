@@ -4,27 +4,31 @@ public abstract class EntityState
 {
 	protected Player player; // TODO: Cross-Reference auflösen
 	protected StateMachine stateMachine;
-	protected string stateName;
+	protected string animBoolName;
 
-	public EntityState(Player player, StateMachine stateMachine, string stateName)
+	protected Animator anim;
+
+	public EntityState(Player player, StateMachine stateMachine, string animBoolName)
 	{
 		this.player = player;
 		this.stateMachine = stateMachine;
-		this.stateName = stateName;
+		this.animBoolName = animBoolName;
+
+		anim = player.anim;
 	}
 
 	public virtual void Enter()
 	{
-		Debug.Log($"Enter {stateName}");
+		anim.SetBool(animBoolName, true);
 	}
 
 	public virtual void Update()
 	{
-		Debug.Log($"Run Update of {stateName}");
+		Debug.Log($"Run Update of {animBoolName}");
 	}
 
 	public virtual void Exit()
-	{ 
-		Debug.Log($"Exit {stateName}");
+	{
+		anim.SetBool(animBoolName, false);
 	}
 }
