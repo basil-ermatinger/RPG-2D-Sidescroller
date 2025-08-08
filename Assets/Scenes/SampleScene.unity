@@ -616,6 +616,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <moveSpeed>k__BackingField: 8
+  <jumpForce>k__BackingField: 5
 --- !u!4 &1382139718
 Transform:
   m_ObjectHideFlags: 0

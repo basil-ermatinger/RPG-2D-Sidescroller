@@ -5,16 +5,18 @@ public class Player : MonoBehaviour
 	public Animator anim { get; private set; }
 	public Rigidbody2D rb { get; private set; }
 
-	private PlayerInputSet input;
+	public PlayerInputSet input { get; private set; }
 	private StateMachine stateMachine;
 
 	public PlayerIdleState idleState { get; private set; }
 	public PlayerMoveState moveState { get; private set; }
-
-	public Vector2 moveInput { get; private set; }
+	public PlayerJumpState jumpState { get; private set; }
+	public PlayerFallState fallState { get; private set; }
 
 	[field: Header("Movement details")]
 	[field: SerializeField] public float moveSpeed { get; private set; }
+	[field: SerializeField] public float jumpForce { get; private set; }
+	public Vector2 moveInput { get; private set; }
 
 	private bool facingRight = true;
 
@@ -26,11 +28,7 @@ public class Player : MonoBehaviour
 
 	private void HandleFlip(float xVelocity)
 	{
-		if(xVelocity > 0 && facingRight == false)
-		{
-			Flip();
-		}
-		else if(xVelocity < 0 && facingRight == true)
+		if((xVelocity > 0) != facingRight)
 		{
 			Flip();
 		}
@@ -65,6 +63,8 @@ public class Player : MonoBehaviour
 
 		idleState = new PlayerIdleState(this, stateMachine, "idle"); // TODO: Magic String to enum
 		moveState = new PlayerMoveState(this, stateMachine, "move"); // TODO: Magic String to enum
+		jumpState = new PlayerJumpState(this, stateMachine, "jumpFall"); // TODO: Magic String to enum
+		fallState = new PlayerFallState(this, stateMachine, "jumpFall"); // TODO: Magic String to enum
 	}
 
 	private void Start()
