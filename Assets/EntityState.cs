@@ -7,6 +7,8 @@ public abstract class EntityState
 	protected string animBoolName;
 
 	protected Animator anim;
+	protected Rigidbody2D rb;
+	protected PlayerInputSet input;
 
 	public EntityState(Player player, StateMachine stateMachine, string animBoolName)
 	{
@@ -15,6 +17,8 @@ public abstract class EntityState
 		this.animBoolName = animBoolName;
 
 		anim = player.anim;
+		rb = player.rb;
+		input = player.input;
 	}
 
 	public virtual void Enter()
@@ -24,7 +28,7 @@ public abstract class EntityState
 
 	public virtual void Update()
 	{
-		Debug.Log($"Run Update of {animBoolName}");
+		anim.SetFloat("yVelocity", rb.linearVelocityY); // TODO: Magic String to Enum
 	}
 
 	public virtual void Exit()
