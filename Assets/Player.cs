@@ -16,16 +16,30 @@ public class Player : MonoBehaviour
 	[field: Header("Movement details")]
 	[field: SerializeField] public float moveSpeed { get; private set; }
 
-	private void Awake()
-	{
-		anim = GetComponentInChildren<Animator>();
-		rb = GetComponent<Rigidbody2D>();
+	private bool facingRight = true;
 
-		stateMachine = new StateMachine();
-		input = new PlayerInputSet();
-		
-		idleState = new PlayerIdleState(this, stateMachine, "idle"); // TODO: Magic String to enum
-		moveState = new PlayerMoveState(this, stateMachine, "move"); // TODO: Magic String to enum
+	public void SetVelocity(float xVelocity, float yVelocity)
+	{
+		rb.linearVelocity = new Vector2(xVelocity, yVelocity);
+		HandleFlip(xVelocity);
+	}
+
+	private void HandleFlip(float xVelocity)
+	{
+		if(xVelocity > 0 && facingRight == false)
+		{
+			Flip();
+		}
+		else if(xVelocity < 0 && facingRight == true)
+		{
+			Flip();
+		}
+	}
+
+	private void Flip()
+	{
+		transform.Rotate(0, 180, 0);
+		facingRight = !facingRight;
 	}
 
 	private void OnEnable()
@@ -41,6 +55,18 @@ public class Player : MonoBehaviour
 		input.Disable();
 	}
 
+	private void Awake()
+	{
+		anim = GetComponentInChildren<Animator>();
+		rb = GetComponent<Rigidbody2D>();
+
+		stateMachine = new StateMachine();
+		input = new PlayerInputSet();
+
+		idleState = new PlayerIdleState(this, stateMachine, "idle"); // TODO: Magic String to enum
+		moveState = new PlayerMoveState(this, stateMachine, "move"); // TODO: Magic String to enum
+	}
+
 	private void Start()
 	{
 		stateMachine.Initialize(idleState);
@@ -49,10 +75,5 @@ public class Player : MonoBehaviour
 	private void Update()
 	{
 		stateMachine.UpdateActiveState();
-	}
-
-	public void SetVelocity(float xVelocity, float yVelocity)
-	{
-		rb.linearVelocity = new Vector2(xVelocity, yVelocity);
 	}
 }
