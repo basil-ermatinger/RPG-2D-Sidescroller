@@ -16,6 +16,7 @@ public class Player : MonoBehaviour
 	public PlayerFallState fallState { get; private set; }
 	public PlayerWallSlideState wallSlideState { get; private set; }
 	public PlayerWallJumpState wallJumpState { get; private set; }
+	public PlayerDashState dashState { get; private set; }
 
 	// Movement Settings
 	[field: Header("Movement details")]
@@ -25,6 +26,10 @@ public class Player : MonoBehaviour
 
 	[field: SerializeField, Range(0, 1)] public float inAirMoveMultiplier { get; private set; }
 	[field: SerializeField, Range(0, 1)] public float wallSlideSlowMultiplier { get; private set; }
+	
+	[field: SerializeField, Space] public float dashDuration { get; private set; }
+	[field: SerializeField] public float dashSpeed { get; private set; }
+
 	private bool facingRight = true;
 	public int facingDir { get; private set; } = 1; // TODO: Better make this an enum with a value of right = 1 and left = -1 / other alternative would be to use the facingRight variable instead
 	public Vector2 moveInput { get; private set; }
@@ -54,6 +59,7 @@ public class Player : MonoBehaviour
 		fallState = new PlayerFallState(this, stateMachine, "jumpFall"); // TODO: Magic String to enum
 		wallSlideState = new PlayerWallSlideState(this, stateMachine, "wallSlide"); // TODO: Magic String to enum
 		wallJumpState = new PlayerWallJumpState(this, stateMachine, "jumpFall"); // TODO: Magic String to enum
+		dashState = new PlayerDashState(this, stateMachine, "dash"); // TODO: Magic String to enum
 	}
 
 	private void OnEnable()
@@ -109,11 +115,7 @@ public class Player : MonoBehaviour
 
 	private void HandleFlip(float xVelocity)
 	{
-		if(xVelocity > 0 && !facingRight)
-		{
-			Flip();
-		}
-		else if(xVelocity < 0 && facingRight)
+		if(xVelocity > 0 && !facingRight || xVelocity < 0 && facingRight)
 		{
 			Flip();
 		}

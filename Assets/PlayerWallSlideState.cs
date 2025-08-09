@@ -29,13 +29,8 @@ public class PlayerWallSlideState : EntityState
 
 	private void HandleWallSlide()
 	{
-		if(player.moveInput.y < 0)
-		{
-			player.SetVelocity(player.moveInput.x, rb.linearVelocityY);
-		}
-		else
-		{
-			player.SetVelocity(player.moveInput.x, rb.linearVelocity.y * player.wallSlideSlowMultiplier);
-		}
+		player.SetVelocity(
+			player.moveInput.x, 
+			player.moveInput.y < 0 ? rb.linearVelocityY : rb.linearVelocity.y * player.wallSlideSlowMultiplier);
 	}
 }
