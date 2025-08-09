@@ -1,6 +1,3 @@
-using JetBrains.Annotations;
-using UnityEngine;
-
 public class PlayerJumpState : PlayerAiredState
 {
 	public PlayerJumpState(Player player, StateMachine stateMachine, string animBoolName) : base(player, stateMachine, animBoolName)

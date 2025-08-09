@@ -1,5 +1,3 @@
-using UnityEngine;
-
 public class PlayerGroundedState : EntityState
 {
 	public PlayerGroundedState(Player player, StateMachine stateMachine, string animBoolName) : base(player, stateMachine, animBoolName)
@@ -10,7 +8,7 @@ public class PlayerGroundedState : EntityState
 	{
 		base.Update();
 
-		if(rb.linearVelocityY < 0)
+		if(rb.linearVelocityY < 0 && !player.groundDetected)
 		{
 			stateMachine.ChangeState(player.fallState);
 		}

@@ -14,21 +14,26 @@ public class Player : MonoBehaviour
 	public PlayerMoveState moveState { get; private set; }
 	public PlayerJumpState jumpState { get; private set; }
 	public PlayerFallState fallState { get; private set; }
+	public PlayerWallSlideState wallSlideState { get; private set; }
 
 	// Movement Settings
 	[field: Header("Movement details")]
 	[field: SerializeField] public float moveSpeed { get; private set; }
 	[field: SerializeField] public float jumpForce { get; private set; }
+
 	[field: SerializeField, Range(0, 1)] public float inAirMoveMultiplier { get; private set; }
-	
+	[field: SerializeField, Range(0, 1)] public float wallSlideSlowMultiplier { get; private set; }
 	private bool facingRight = true;
+	private int facingDir = 1; // TODO: Better make this an enum with a value of right = 1 and left = -1 / other alternative would be to use the facingRight variable instead
 	public Vector2 moveInput { get; private set; }
 
 	// Collision Settings
 	[Header("Collision detection")]
 	[SerializeField] private float groundCheckDistance;
+	[SerializeField] private float wallCheckDistance;
 	[SerializeField] private LayerMask whatIsGround;
 	public bool groundDetected { get; private set; }
+	public bool wallDetected { get; private set; }
 
 	#region Unity Lifecycle
 	/// Unity's event functions: Awake, Start, Update...
@@ -45,6 +50,7 @@ public class Player : MonoBehaviour
 		moveState = new PlayerMoveState(this, stateMachine, "move"); // TODO: Magic String to enum
 		jumpState = new PlayerJumpState(this, stateMachine, "jumpFall"); // TODO: Magic String to enum
 		fallState = new PlayerFallState(this, stateMachine, "jumpFall"); // TODO: Magic String to enum
+		wallSlideState = new PlayerWallSlideState(this, stateMachine, "wallSlide"); // TODO: Magin String to enum
 	}
 
 	private void OnEnable()
@@ -74,6 +80,7 @@ public class Player : MonoBehaviour
 	private void OnDrawGizmos()
 	{
 		Gizmos.DrawLine(transform.position, transform.position + new Vector3(0, -groundCheckDistance));
+		Gizmos.DrawLine(transform.position, transform.position + new Vector3(wallCheckDistance * facingDir, 0));
 	}
 
 	#endregion
@@ -86,13 +93,20 @@ public class Player : MonoBehaviour
 		HandleFlip(xVelocity);
 	}
 
+	public void Flip()
+	{
+		transform.Rotate(0, 180, 0);
+		facingRight = !facingRight;
+		facingDir *= -1;
+	}
+
 	#endregion
 
 	#region Private Helpers
 
 	private void HandleFlip(float xVelocity)
 	{
-		if(xVelocity > 0 && facingRight == false)
+		if(xVelocity > 0 && !facingRight)
 		{
 			Flip();
 		}
@@ -102,15 +116,10 @@ public class Player : MonoBehaviour
 		}
 	}
 
-	private void Flip()
-	{
-		transform.Rotate(0, 180, 0);
-		facingRight = !facingRight;
-	}
-
 	private void HandleCollisionDetection()
 	{
 		groundDetected = Physics2D.Raycast(transform.position, Vector2.down, groundCheckDistance, whatIsGround);
+		wallDetected = Physics2D.Raycast(transform.position, Vector2.right * facingDir, wallCheckDistance, whatIsGround);
 	}
 
 	#endregion
