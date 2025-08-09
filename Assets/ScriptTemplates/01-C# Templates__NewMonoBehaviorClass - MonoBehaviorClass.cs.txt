@@ -2,4 +2,12 @@ using UnityEngine;
 
 public class #SCRIPTNAME# : MonoBehaviour
 {
+  #region Unity Lifecycle
+  #endregion
+
+  #region Public Methods
+  #endregion
+  
+  #region Private Methods
+  #endregion
 }
