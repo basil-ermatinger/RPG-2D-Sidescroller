@@ -783,6 +783,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <moveSpeed>k__BackingField: 8
   <jumpForce>k__BackingField: 12
+  <wallJumpForce>k__BackingField: {x: 6, y: 12}
   <inAirMoveMultiplier>k__BackingField: 0.65
   <wallSlideSlowMultiplier>k__BackingField: 0.7
   groundCheckDistance: 1.4
