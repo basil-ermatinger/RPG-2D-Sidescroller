@@ -10,27 +10,27 @@ public class PlayerWallSlideState : EntityState
 
 		HandleWallSlide();
 
-		if(input.Player.Jump.WasPressedThisFrame())
+		if(_input.Player.Jump.WasPressedThisFrame())
 		{
-			stateMachine.ChangeState(player.wallJumpState);
+			_stateMachine.ChangeState(_player.WallJumpState);
 		}
 
-		if(!player.wallDetected)
+		if(!_player.WallDetected)
 		{
-			stateMachine.ChangeState(player.fallState);
+			_stateMachine.ChangeState(_player.FallState);
 		}
 
-		if(player.groundDetected)
+		if(_player.GroundDetected)
 		{
-			stateMachine.ChangeState(player.idleState);
-			player.Flip();
+			_stateMachine.ChangeState(_player.IdleState);
+			_player.Flip();
 		}
 	}
 
 	private void HandleWallSlide()
 	{
-		player.SetVelocity(
-			player.moveInput.x, 
-			player.moveInput.y < 0 ? rb.linearVelocityY : rb.linearVelocity.y * player.wallSlideSlowMultiplier);
+		_player.SetVelocity(
+			_player.MoveInput.x, 
+			_player.MoveInput.y < 0 ? _rb.linearVelocityY : _rb.linearVelocity.y * _player.WallSlideSlowMultiplier);
 	}
 }
