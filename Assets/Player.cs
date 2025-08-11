@@ -6,7 +6,7 @@ public class Player : MonoBehaviour
 	public Animator Anim { get; private set; }
 	public Rigidbody2D Rb { get; private set; }
 
-	public PlayerInputSet _input { get; private set; }
+	public PlayerInputSet Input { get; private set; }
 	private StateMachine _stateMachine;
 
 	// Player States
@@ -18,6 +18,11 @@ public class Player : MonoBehaviour
 	public PlayerWallJumpState WallJumpState { get; private set; }
 	public PlayerDashState DashState { get; private set; }
 	public PlayerBasicAttackState BasicAttackState { get; private set; }
+
+	// Attack Settings
+	[field: Header("Attack details")]
+	[field: SerializeField] public Vector2 AttackVelocity { get; private set; }
+	[field: SerializeField] public float AttackVelocityDuration { get; private set; }
 
 	// Movement Settings
 	[field: Header("Movement details")]
@@ -44,7 +49,6 @@ public class Player : MonoBehaviour
 	public bool WallDetected { get; private set; }
 
 	#region Unity Lifecycle
-	/// Unity's event functions: Awake, Start, Update...
 
 	private void Awake()
 	{
@@ -52,7 +56,7 @@ public class Player : MonoBehaviour
 		Rb = GetComponent<Rigidbody2D>();
 
 		_stateMachine = new StateMachine();
-		_input = new PlayerInputSet();
+		Input = new PlayerInputSet();
 
 		IdleState = new PlayerIdleState(this, _stateMachine, "idle"); // TODO: Magic String to enum
 		MoveState = new PlayerMoveState(this, _stateMachine, "move"); // TODO: Magic String to enum
@@ -61,15 +65,15 @@ public class Player : MonoBehaviour
 		WallSlideState = new PlayerWallSlideState(this, _stateMachine, "wallSlide"); // TODO: Magic String to enum
 		WallJumpState = new PlayerWallJumpState(this, _stateMachine, "jumpFall"); // TODO: Magic String to enum
 		DashState = new PlayerDashState(this, _stateMachine, "dash"); // TODO: Magic String to enum
-		BasicAttackState = new PlayerBasicAttackState(this, _stateMachine, "dash"); // TODO: Magin String to enum
+		BasicAttackState = new PlayerBasicAttackState(this, _stateMachine, "basicAttack"); // TODO: Magin String to enum
 	}
 
 	private void OnEnable()
 	{
-		_input.Enable();
+		Input.Enable();
 
-		_input.Player.Movement.performed += ctx => MoveInput = ctx.ReadValue<Vector2>();
-		_input.Player.Movement.canceled += ctx => MoveInput = Vector2.zero;
+		Input.Player.Movement.performed += ctx => MoveInput = ctx.ReadValue<Vector2>();
+		Input.Player.Movement.canceled += ctx => MoveInput = Vector2.zero;
 	}
 
 	private void Start()
@@ -85,7 +89,7 @@ public class Player : MonoBehaviour
 
 	private void OnDisable()
 	{
-		_input.Disable();
+		Input.Disable();
 	}
 
 	private void OnDrawGizmos()
@@ -97,6 +101,11 @@ public class Player : MonoBehaviour
 	#endregion
 
 	#region Public Methods
+
+	public void CallAnimationTrigger()
+	{
+		_stateMachine._currentState.CallAnimationTrigger();
+	}
 
 	public void SetVelocity(float xVelocity, float yVelocity)
 	{

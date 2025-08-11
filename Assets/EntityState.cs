@@ -11,6 +11,7 @@ public abstract class EntityState
 	protected PlayerInputSet _input;
 
 	protected float _stateTimer;
+	protected bool _triggerCalled;
 
 	public EntityState(Player player, StateMachine stateMachine, string animBoolName)
 	{
@@ -20,12 +21,13 @@ public abstract class EntityState
 
 		_anim = player.Anim;
 		_rb = player.Rb;
-		_input = player._input;
+		_input = player.Input;
 	}
 
 	public virtual void Enter()
 	{
 		_anim.SetBool(_animBoolName, true);
+		_triggerCalled = false;
 	}
 
 	public virtual void Update()
@@ -42,6 +44,11 @@ public abstract class EntityState
 	public virtual void Exit()
 	{
 		_anim.SetBool(_animBoolName, false);
+	}
+
+	public void CallAnimationTrigger()
+	{
+		_triggerCalled = true;
 	}
 
 	private bool CanDash()
