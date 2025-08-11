@@ -17,6 +17,7 @@ public class Player : MonoBehaviour
 	public PlayerWallSlideState wallSlideState { get; private set; }
 	public PlayerWallJumpState wallJumpState { get; private set; }
 	public PlayerDashState dashState { get; private set; }
+	public PlayerBasicAttackState basicAttackState { get; private set; }
 
 	// Movement Settings
 	[field: Header("Movement details")]
@@ -60,6 +61,7 @@ public class Player : MonoBehaviour
 		wallSlideState = new PlayerWallSlideState(this, stateMachine, "wallSlide"); // TODO: Magic String to enum
 		wallJumpState = new PlayerWallJumpState(this, stateMachine, "jumpFall"); // TODO: Magic String to enum
 		dashState = new PlayerDashState(this, stateMachine, "dash"); // TODO: Magic String to enum
+		basicAttackState = new PlayerBasicAttackState(this, stateMachine, "dash"); // TODO: Magin String to enum
 	}
 
 	private void OnEnable()
