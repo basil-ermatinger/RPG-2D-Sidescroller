@@ -11,11 +11,11 @@ public class PlayerDashState : EntityState
 	{
 		base.Enter();
 
-		_dashDir = player.facingDir;
-		stateTimer = player.dashDuration;
+		_dashDir = _player.FacingDir;
+		_stateTimer = _player.DashDuration;
 
-		_originalGravityScale = rb.gravityScale;
-		rb.gravityScale = 0;
+		_originalGravityScale = _rb.gravityScale;
+		_rb.gravityScale = 0;
 	}
 
 	public override void Update()
@@ -24,26 +24,26 @@ public class PlayerDashState : EntityState
 
 		CancelDashIfNeeded();
 
-		player.SetVelocity(player.dashSpeed * _dashDir, 0);
+		_player.SetVelocity(_player.DashSpeed * _dashDir, 0);
 
-		if(stateTimer < 0)
+		if(_stateTimer < 0)
 		{
-			stateMachine.ChangeState(player.groundDetected ? player.idleState : player.fallState);
+			_stateMachine.ChangeState(_player.GroundDetected ? _player.IdleState : _player.FallState);
 		}
 	}
 
 	public override void Exit()
 	{
 		base.Exit();
-		player.SetVelocity(0, 0);
-		rb.gravityScale = _originalGravityScale;
+		_player.SetVelocity(0, 0);
+		_rb.gravityScale = _originalGravityScale;
 	}
 
 	private void CancelDashIfNeeded()
 	{
-		if(player.wallDetected)
+		if(_player.WallDetected)
 		{
-			stateMachine.ChangeState(player.groundDetected ? player.idleState : player.wallSlideState);
+			_stateMachine.ChangeState(_player.GroundDetected ? _player.IdleState : _player.WallSlideState);
 		}
 	}
 }

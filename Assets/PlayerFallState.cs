@@ -8,14 +8,14 @@ public class PlayerFallState : PlayerAiredState
 	{
 		base.Update();
 
-		if(player.groundDetected)
+		if(_player.GroundDetected)
 		{
-			stateMachine.ChangeState(player.idleState);
+			_stateMachine.ChangeState(_player.IdleState);
 		}
 
-		if(player.wallDetected)
+		if(_player.WallDetected)
 		{
-			stateMachine.ChangeState(player.wallSlideState);
+			_stateMachine.ChangeState(_player.WallSlideState);
 		}
 	}
 }

@@ -10,21 +10,21 @@ public class PlayerWallJumpState : EntityState
 	{
 		base.Enter();
 
-		player.SetVelocity(player.wallJumpForce.x * -player.facingDir, player.wallJumpForce.y);
+		_player.SetVelocity(_player.WallJumpForce.x * -_player.FacingDir, _player.WallJumpForce.y);
 	}
 
 	public override void Update()
 	{
 		base.Update();
 
-		if(rb.linearVelocityY < 0)
+		if(_rb.linearVelocityY < 0)
 		{
-			stateMachine.ChangeState(player.fallState);
+			_stateMachine.ChangeState(_player.FallState);
 		}
 
-		if(player.wallDetected)
+		if(_player.WallDetected)
 		{
-			stateMachine.ChangeState(player.wallSlideState);
+			_stateMachine.ChangeState(_player.WallSlideState);
 		}
 	}
 }

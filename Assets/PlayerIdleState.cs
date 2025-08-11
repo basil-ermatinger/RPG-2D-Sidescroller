@@ -8,16 +8,16 @@ public class PlayerIdleState : PlayerGroundedState
 	{
 		base.Enter();
 
-		player.SetVelocity(0, rb.linearVelocityY);
+		_player.SetVelocity(0, _rb.linearVelocityY);
 	}
 
 	public override void Update()
 	{
 		base.Update();
 
-		if(player.moveInput.x != 0)
+		if(_player.MoveInput.x != 0)
 		{
-			stateMachine.ChangeState(player.moveState);
+			_stateMachine.ChangeState(_player.MoveState);
 		}
 	}
 }

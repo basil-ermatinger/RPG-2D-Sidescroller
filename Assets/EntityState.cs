@@ -2,51 +2,51 @@ using UnityEngine;
 
 public abstract class EntityState
 {
-	protected Player player; // TODO: Cross-Reference auflösen
-	protected StateMachine stateMachine;
-	protected string animBoolName;
+	protected Player _player; // TODO: Cross-Reference auflösen
+	protected StateMachine _stateMachine;
+	protected string _animBoolName;
 
-	protected Animator anim;
-	protected Rigidbody2D rb;
-	protected PlayerInputSet input;
+	protected Animator _anim;
+	protected Rigidbody2D _rb;
+	protected PlayerInputSet _input;
 
-	protected float stateTimer;
+	protected float _stateTimer;
 
 	public EntityState(Player player, StateMachine stateMachine, string animBoolName)
 	{
-		this.player = player;
-		this.stateMachine = stateMachine;
-		this.animBoolName = animBoolName;
+		this._player = player;
+		this._stateMachine = stateMachine;
+		this._animBoolName = animBoolName;
 
-		anim = player.anim;
-		rb = player.rb;
-		input = player.input;
+		_anim = player.Anim;
+		_rb = player.Rb;
+		_input = player._input;
 	}
 
 	public virtual void Enter()
 	{
-		anim.SetBool(animBoolName, true);
+		_anim.SetBool(_animBoolName, true);
 	}
 
 	public virtual void Update()
 	{
-		stateTimer -= Time.deltaTime;
-		anim.SetFloat("yVelocity", rb.linearVelocityY); // TODO: Magic String to Enum
+		_stateTimer -= Time.deltaTime;
+		_anim.SetFloat("yVelocity", _rb.linearVelocityY); // TODO: Magic String to Enum
 
-		if(input.Player.Dash.WasPressedThisFrame() && CanDash())
+		if(_input.Player.Dash.WasPressedThisFrame() && CanDash())
 		{
-			stateMachine.ChangeState(player.dashState);
+			_stateMachine.ChangeState(_player.DashState);
 		}
 	}
 
 	public virtual void Exit()
 	{
-		anim.SetBool(animBoolName, false);
+		_anim.SetBool(_animBoolName, false);
 	}
 
 	private bool CanDash()
 	{
-		if(player.wallDetected || stateMachine.currentState == player.dashState)
+		if(_player.WallDetected || _stateMachine._currentState == _player.DashState)
 		{
 			return false;
 		}

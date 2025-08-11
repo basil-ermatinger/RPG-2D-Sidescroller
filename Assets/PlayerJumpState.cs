@@ -8,16 +8,16 @@ public class PlayerJumpState : PlayerAiredState
 	{
 		base.Enter();
 
-		player.SetVelocity(rb.linearVelocityX, player.jumpForce);
+		_player.SetVelocity(_rb.linearVelocityX, _player.JumpForce);
 	}
 
 	public override void Update()
 	{
 		base.Update();
 
-		if(rb.linearVelocityY < 0)
+		if(_rb.linearVelocityY < 0)
 		{
-			stateMachine.ChangeState(player.fallState);
+			_stateMachine.ChangeState(_player.FallState);
 		}
 	}
 }
