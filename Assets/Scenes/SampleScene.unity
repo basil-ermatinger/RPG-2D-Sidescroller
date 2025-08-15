@@ -928,8 +928,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f515c8dea1021ad439169908059bfa46, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <AttackVelocity>k__BackingField: {x: 3, y: 1.5}
+  <AttackVelocity>k__BackingField:
+  - {x: 3, y: 1.5}
+  - {x: 1, y: 2.5}
+  - {x: 2.75, y: 1.75}
   <AttackVelocityDuration>k__BackingField: 0.1
+  <comboResetTime>k__BackingField: 1
   <MoveSpeed>k__BackingField: 8
   <JumpForce>k__BackingField: 12
   <WallJumpForce>k__BackingField: {x: 6, y: 12}

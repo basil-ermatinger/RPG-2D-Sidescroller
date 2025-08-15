@@ -21,8 +21,9 @@ public class Player : MonoBehaviour
 
 	// Attack Settings
 	[field: Header("Attack details")]
-	[field: SerializeField] public Vector2 AttackVelocity { get; private set; }
+	[field: SerializeField] public Vector2[] AttackVelocity { get; private set; }
 	[field: SerializeField] public float AttackVelocityDuration { get; private set; }
+	[field: SerializeField] public float comboResetTime { get; private set; }
 
 	// Movement Settings
 	[field: Header("Movement details")]
