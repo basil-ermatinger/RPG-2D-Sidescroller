@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class Player : MonoBehaviour
@@ -21,21 +22,43 @@ public class Player : MonoBehaviour
 
 	// Attack Settings
 	[field: Header("Attack details")]
-	[field: SerializeField] public Vector2[] AttackVelocity { get; private set; }
-	[field: SerializeField] public float AttackVelocityDuration { get; private set; }
-	[field: SerializeField] public float comboResetTime { get; private set; }
+	
+	[field: SerializeField] 
+	public Vector2[] AttackVelocity { get; private set; }
+	
+	[field: SerializeField] 
+	public float AttackVelocityDuration { get; private set; }
+	
+	[field: SerializeField] 
+	public float comboResetTime { get; private set; }
+
+	private Coroutine _queuedAttackCo;
 
 	// Movement Settings
 	[field: Header("Movement details")]
-	[field: SerializeField] public float MoveSpeed { get; private set; }
-	[field: SerializeField] public float JumpForce { get; private set; }
-	[field: SerializeField] public Vector2 WallJumpForce { get; private set; }
-
-	[field: SerializeField, Range(0, 1)] public float InAirMoveMultiplier { get; private set; }
-	[field: SerializeField, Range(0, 1)] public float WallSlideSlowMultiplier { get; private set; }
 	
-	[field: SerializeField, Space] public float DashDuration { get; private set; }
-	[field: SerializeField] public float DashSpeed { get; private set; }
+	[field: SerializeField] 
+	public float MoveSpeed { get; private set; }
+	
+	[field: SerializeField] 
+	public float JumpForce { get; private set; }
+	
+	[field: SerializeField] 
+	public Vector2 WallJumpForce { get; private set; }
+
+	[field: SerializeField]
+	[field: Range(0, 1)]
+	public float InAirMoveMultiplier { get; private set; }
+	
+	[field: SerializeField]
+	[field: Range(0, 1)]
+	public float WallSlideSlowMultiplier { get; private set; }
+	
+	[field: SerializeField, Space]
+	public float DashDuration { get; private set; }
+	
+	[field: SerializeField] 
+	public float DashSpeed { get; private set; }
 
 	private bool _facingRight = true;
 	public int FacingDir { get; private set; } = 1; // TODO: Better make this an enum with a value of right = 1 and left = -1 / other alternative would be to use the facingRight variable instead
@@ -43,9 +66,16 @@ public class Player : MonoBehaviour
 
 	// Collision Settings
 	[Header("Collision detection")]
-	[SerializeField] private float _groundCheckDistance;
-	[SerializeField] private float _wallCheckDistance;
-	[SerializeField] private LayerMask _whatIsGround;
+	
+	[SerializeField] 
+	private float _groundCheckDistance;
+	
+	[SerializeField] 
+	private float _wallCheckDistance;
+	
+	[SerializeField] 
+	private LayerMask _whatIsGround;
+	
 	public bool GroundDetected { get; private set; }
 	public bool WallDetected { get; private set; }
 
@@ -121,6 +151,16 @@ public class Player : MonoBehaviour
 		FacingDir *= -1;
 	}
 
+	public void EnterAttackStateWithDelay()
+	{
+		if(_queuedAttackCo != null)
+		{
+			StopCoroutine(_queuedAttackCo);
+		}
+
+		_queuedAttackCo = StartCoroutine(EnterAttackStateWithDelayCo());
+	}
+
 	#endregion
 
 	#region Private Helpers
@@ -137,6 +177,12 @@ public class Player : MonoBehaviour
 	{
 		GroundDetected = Physics2D.Raycast(transform.position, Vector2.down, _groundCheckDistance, _whatIsGround);
 		WallDetected = Physics2D.Raycast(transform.position, Vector2.right * FacingDir, _wallCheckDistance, _whatIsGround);
+	}
+
+	private IEnumerator EnterAttackStateWithDelayCo()
+	{
+		yield return new WaitForEndOfFrame();
+		_stateMachine.ChangeState(BasicAttackState);
 	}
 
 	#endregion
