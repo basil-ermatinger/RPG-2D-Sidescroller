@@ -15,7 +15,8 @@ public class PlayerJumpState : PlayerAiredState
 	{
 		base.Update();
 
-		if(_rb.linearVelocityY < 0)
+		// Check if player is not in jump attack state when transfer to fall state.
+		if(_rb.linearVelocityY < 0 && _stateMachine.CurrentState != _player.JumpAttackState)
 		{
 			_stateMachine.ChangeState(_player.FallState);
 		}

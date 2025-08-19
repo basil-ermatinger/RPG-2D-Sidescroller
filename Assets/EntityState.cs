@@ -53,7 +53,7 @@ public abstract class EntityState
 
 	private bool CanDash()
 	{
-		if(_player.WallDetected || _stateMachine._currentState == _player.DashState)
+		if(_player.WallDetected || _stateMachine.CurrentState == _player.DashState)
 		{
 			return false;
 		}

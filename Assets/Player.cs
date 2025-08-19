@@ -19,12 +19,16 @@ public class Player : MonoBehaviour
 	public PlayerWallJumpState WallJumpState { get; private set; }
 	public PlayerDashState DashState { get; private set; }
 	public PlayerBasicAttackState BasicAttackState { get; private set; }
+	public PlayerJumpAttackState JumpAttackState { get; private set; }
 
 	// Attack Settings
 	[field: Header("Attack details")]
 	
 	[field: SerializeField] 
 	public Vector2[] AttackVelocity { get; private set; }
+
+	[field: SerializeField]
+	public Vector2 JumpAttackVelocity { get; private set; }
 	
 	[field: SerializeField] 
 	public float AttackVelocityDuration { get; private set; }
@@ -89,14 +93,15 @@ public class Player : MonoBehaviour
 		_stateMachine = new StateMachine();
 		Input = new PlayerInputSet();
 
-		IdleState = new PlayerIdleState(this, _stateMachine, "idle"); // TODO: Magic String to enum
-		MoveState = new PlayerMoveState(this, _stateMachine, "move"); // TODO: Magic String to enum
-		JumpState = new PlayerJumpState(this, _stateMachine, "jumpFall"); // TODO: Magic String to enum
-		FallState = new PlayerFallState(this, _stateMachine, "jumpFall"); // TODO: Magic String to enum
-		WallSlideState = new PlayerWallSlideState(this, _stateMachine, "wallSlide"); // TODO: Magic String to enum
-		WallJumpState = new PlayerWallJumpState(this, _stateMachine, "jumpFall"); // TODO: Magic String to enum
-		DashState = new PlayerDashState(this, _stateMachine, "dash"); // TODO: Magic String to enum
-		BasicAttackState = new PlayerBasicAttackState(this, _stateMachine, "basicAttack"); // TODO: Magin String to enum
+		IdleState = new PlayerIdleState(this, _stateMachine, "idle");
+		MoveState = new PlayerMoveState(this, _stateMachine, "move");
+		JumpState = new PlayerJumpState(this, _stateMachine, "jumpFall");
+		FallState = new PlayerFallState(this, _stateMachine, "jumpFall");
+		WallSlideState = new PlayerWallSlideState(this, _stateMachine, "wallSlide");
+		WallJumpState = new PlayerWallJumpState(this, _stateMachine, "jumpFall");
+		DashState = new PlayerDashState(this, _stateMachine, "dash");
+		BasicAttackState = new PlayerBasicAttackState(this, _stateMachine, "basicAttack");
+		JumpAttackState = new PlayerJumpAttackState(this, _stateMachine, "jumpAttack");
 	}
 
 	private void OnEnable()
@@ -135,7 +140,7 @@ public class Player : MonoBehaviour
 
 	public void CallAnimationTrigger()
 	{
-		_stateMachine._currentState.CallAnimationTrigger();
+		_stateMachine.CurrentState.CallAnimationTrigger();
 	}
 
 	public void SetVelocity(float xVelocity, float yVelocity)

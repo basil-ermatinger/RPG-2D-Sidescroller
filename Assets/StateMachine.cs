@@ -1,22 +1,22 @@
 public class StateMachine
 {
-	public EntityState _currentState { get; private set; }
+	public EntityState CurrentState { get; private set; }
 
 	public void Initialize(EntityState startState)
 	{
-		_currentState = startState;
-		_currentState.Enter();
+		CurrentState = startState;
+		CurrentState.Enter();
 	}
 
 	public void ChangeState(EntityState newState)
 	{
-		_currentState.Exit();
-		_currentState = newState;
-		_currentState.Enter();
+		CurrentState.Exit();
+		CurrentState = newState;
+		CurrentState.Enter();
 	}
 
 	public void UpdateActiveState()
 	{
-		_currentState.Update();
+		CurrentState.Update();
 	}
 }
