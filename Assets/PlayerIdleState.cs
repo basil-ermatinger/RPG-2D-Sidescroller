@@ -1,5 +1,3 @@
-using UnityEngine;
-
 public class PlayerIdleState : PlayerGroundedState
 {
 	public PlayerIdleState(Player player, StateMachine stateMachine, string stateName) : base(player, stateMachine, stateName)
@@ -10,16 +8,21 @@ public class PlayerIdleState : PlayerGroundedState
 	{
 		base.Enter();
 
-		player.SetVelocity(0, rb.linearVelocityY);
+		_player.SetVelocity(0, _rb.linearVelocityY);
 	}
 
 	public override void Update()
 	{
 		base.Update();
 
-		if(player.moveInput.x != 0)
+		if(_player.MoveInput.x == _player.FacingDir && _player.WallDetected)
 		{
-			stateMachine.ChangeState(player.moveState);
+			return;
+		}
+
+		if(_player.MoveInput.x != 0)
+		{
+			_stateMachine.ChangeState(_player.MoveState);
 		}
 	}
 }

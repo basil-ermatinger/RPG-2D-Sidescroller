@@ -1,6 +1,3 @@
-using JetBrains.Annotations;
-using UnityEngine;
-
 public class PlayerJumpState : PlayerAiredState
 {
 	public PlayerJumpState(Player player, StateMachine stateMachine, string animBoolName) : base(player, stateMachine, animBoolName)
@@ -11,16 +8,17 @@ public class PlayerJumpState : PlayerAiredState
 	{
 		base.Enter();
 
-		player.SetVelocity(rb.linearVelocityX, player.jumpForce);
+		_player.SetVelocity(_rb.linearVelocityX, _player.JumpForce);
 	}
 
 	public override void Update()
 	{
 		base.Update();
 
-		if(rb.linearVelocityY < 0)
+		// Check if player is not in jump attack state when transfer to fall state.
+		if(_rb.linearVelocityY < 0 && _stateMachine.CurrentState != _player.JumpAttackState)
 		{
-			stateMachine.ChangeState(player.fallState);
+			_stateMachine.ChangeState(_player.FallState);
 		}
 	}
 }

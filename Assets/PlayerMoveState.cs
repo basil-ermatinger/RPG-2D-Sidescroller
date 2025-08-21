@@ -1,5 +1,3 @@
-using UnityEngine;
-
 public class PlayerMoveState : PlayerGroundedState
 {
 	public PlayerMoveState(Player player, StateMachine stateMachine, string stateName) : base(player, stateMachine, stateName)
@@ -10,11 +8,11 @@ public class PlayerMoveState : PlayerGroundedState
 	{
 		base.Update();
 
-		if(player.moveInput.x == 0)
+		if(_player.MoveInput.x == 0 || _player.WallDetected)
 		{
-			stateMachine.ChangeState(player.idleState);
+			_stateMachine.ChangeState(_player.IdleState);
 		}
 
-		player.SetVelocity(player.moveInput.x * player.moveSpeed, rb.linearVelocityY);
+		_player.SetVelocity(_player.MoveInput.x * _player.MoveSpeed, _rb.linearVelocityY);
 	}
 }

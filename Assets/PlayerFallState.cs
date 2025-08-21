@@ -1,5 +1,3 @@
-using UnityEngine;
-
 public class PlayerFallState : PlayerAiredState
 {
 	public PlayerFallState(Player player, StateMachine stateMachine, string animBoolName) : base(player, stateMachine, animBoolName)
@@ -10,9 +8,14 @@ public class PlayerFallState : PlayerAiredState
 	{
 		base.Update();
 
-		if(player.groundDetected)
+		if(_player.GroundDetected)
 		{
-			stateMachine.ChangeState(player.idleState);
+			_stateMachine.ChangeState(_player.IdleState);
+		}
+
+		if(_player.WallDetected)
+		{
+			_stateMachine.ChangeState(_player.WallSlideState);
 		}
 	}
 }
