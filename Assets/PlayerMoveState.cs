@@ -8,7 +8,7 @@ public class PlayerMoveState : PlayerGroundedState
 	{
 		base.Update();
 
-		if(_player.MoveInput.x == 0)
+		if(_player.MoveInput.x == 0 || _player.WallDetected)
 		{
 			_stateMachine.ChangeState(_player.IdleState);
 		}

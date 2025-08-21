@@ -79,6 +79,12 @@ public class Player : MonoBehaviour
 	
 	[SerializeField] 
 	private LayerMask _whatIsGround;
+
+	[SerializeField]
+	private Transform _primaryWallCheck;
+
+	[SerializeField]
+	private Transform _secondaryWallCheck;
 	
 	public bool GroundDetected { get; private set; }
 	public bool WallDetected { get; private set; }
@@ -130,8 +136,12 @@ public class Player : MonoBehaviour
 
 	private void OnDrawGizmos()
 	{
+		// Gizmo for ground check
 		Gizmos.DrawLine(transform.position, transform.position + new Vector3(0, -_groundCheckDistance));
-		Gizmos.DrawLine(transform.position, transform.position + new Vector3(_wallCheckDistance * FacingDir, 0));
+		
+		// Gizmo for wall check
+		Gizmos.DrawLine(_primaryWallCheck.position, _primaryWallCheck.position + new Vector3(_wallCheckDistance * FacingDir, 0));
+		Gizmos.DrawLine(_secondaryWallCheck.position, _secondaryWallCheck.position + new Vector3(_wallCheckDistance * FacingDir, 0));
 	}
 
 	#endregion
@@ -181,7 +191,8 @@ public class Player : MonoBehaviour
 	private void HandleCollisionDetection()
 	{
 		GroundDetected = Physics2D.Raycast(transform.position, Vector2.down, _groundCheckDistance, _whatIsGround);
-		WallDetected = Physics2D.Raycast(transform.position, Vector2.right * FacingDir, _wallCheckDistance, _whatIsGround);
+		WallDetected = Physics2D.Raycast(_primaryWallCheck.position, Vector2.right * FacingDir, _wallCheckDistance, _whatIsGround) 
+			&& Physics2D.Raycast(_secondaryWallCheck.position, Vector2.right * FacingDir, _wallCheckDistance, _whatIsGround);	
 	}
 
 	private IEnumerator EnterAttackStateWithDelayCo()
