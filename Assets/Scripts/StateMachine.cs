@@ -1,22 +1,25 @@
-public class StateMachine
+namespace Rpg2dSidescroller
 {
-	public EntityState CurrentState { get; private set; }
-
-	public void Initialize(EntityState startState)
+	public class StateMachine
 	{
-		CurrentState = startState;
-		CurrentState.Enter();
-	}
+		public EntityState CurrentState { get; private set; }
 
-	public void ChangeState(EntityState newState)
-	{
-		CurrentState.Exit();
-		CurrentState = newState;
-		CurrentState.Enter();
-	}
+		public void Initialize(EntityState startState)
+		{
+			CurrentState = startState;
+			CurrentState.Enter();
+		}
 
-	public void UpdateActiveState()
-	{
-		CurrentState.Update();
+		public void ChangeState(EntityState newState)
+		{
+			CurrentState.Exit();
+			CurrentState = newState;
+			CurrentState.Enter();
+		}
+
+		public void UpdateActiveState()
+		{
+			CurrentState.Update();
+		}
 	}
 }
