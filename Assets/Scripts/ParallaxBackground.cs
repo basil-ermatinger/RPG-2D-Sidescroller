@@ -15,7 +15,7 @@ namespace Rpg2dSidescroller
 			_mainCamera = Camera.main;
 			_cameraHalfWidth = _mainCamera.orthographicSize * _mainCamera.aspect;
 
-			CalculateBackgroundWidth();
+			InitializeLayers();
 		}
 
 		private void FixedUpdate()
@@ -34,7 +34,7 @@ namespace Rpg2dSidescroller
 			}
 		}
 
-		private void CalculateBackgroundWidth()
+		private void InitializeLayers()
 		{
 			foreach(ParallaxLayer layer in _backgroundLayers)
 			{

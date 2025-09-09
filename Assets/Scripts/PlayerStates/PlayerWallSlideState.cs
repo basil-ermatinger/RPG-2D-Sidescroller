@@ -25,7 +25,11 @@ namespace Rpg2dSidescroller
 			if(_player.GroundDetected)
 			{
 				_stateMachine.ChangeState(_player.IdleState);
-				_player.Flip();
+
+				if(_player.FacingDir != _player.MoveInput.x)
+				{
+					_player.Flip();
+				}
 			}
 		}
 
